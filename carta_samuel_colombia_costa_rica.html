@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Samuel 💙</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    radial-gradient(circle at 50% 15%,rgba(40,110,180,.24),transparent 35%),
+    radial-gradient(circle at 15% 85%,rgba(25,65,120,.18),transparent 30%),
+    #070a10;
+  color:#f2f7ff;
+  overflow-x:hidden;
+}
+.stars,.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.65;animation:twinkle 3s infinite ease-in-out}
+@keyframes twinkle{50%{opacity:.12;transform:scale(.5)}}
+.heart{position:absolute;color:#55aaff;font-size:18px;opacity:0;animation:float 9s linear infinite}
+@keyframes float{0%{transform:translateY(110vh) rotate(0);opacity:0}10%{opacity:.55}90%{opacity:.2}100%{transform:translateY(-15vh) rotate(360deg);opacity:0}}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;position:relative;z-index:2}
+.card{
+  width:min(900px,100%);
+  background:rgba(8,13,22,.9);
+  border:1px solid rgba(82,165,255,.34);
+  border-radius:28px;
+  box-shadow:0 0 70px rgba(25,100,180,.2);
+  backdrop-filter:blur(10px);
+  padding:clamp(28px,6vw,65px);
+}
+h1{text-align:center;color:#8dc9ff;font-size:clamp(36px,7vw,64px);margin:5px 0 38px;text-shadow:0 0 24px rgba(70,160,255,.45)}
+.letter{line-height:1.9;font-size:18px}
+.letter p{margin:19px 0}
+.signature{text-align:right;color:#8fc8ff;font-size:20px;margin-top:30px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:35px 0}
+.photo{min-height:190px;border:1px dashed rgba(120,190,255,.5);border-radius:18px;background:linear-gradient(145deg,rgba(35,95,150,.22),rgba(10,17,28,.8));display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;color:#abc5df;overflow:hidden;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.photo span{position:relative;z-index:1;background:rgba(5,9,15,.65);padding:7px 10px;border-radius:9px}
+.final{margin-top:35px;text-align:center;padding:28px;border-radius:20px;background:rgba(40,110,180,.1);border:1px solid rgba(100,180,255,.2)}
+@media(max-width:650px){.gallery{grid-template-columns:1fr}.photo{min-height:220px}.letter{font-size:16px}}
+
+/* Pantalla de espera y ruta Colombia -> Costa Rica */
+#lockedScreen{display:flex}
+.countdown-wrap{text-align:center}
+.lock-title{color:#8dc9ff;font-size:clamp(32px,6vw,55px);margin:0 0 12px;text-shadow:0 0 22px rgba(70,160,255,.4)}
+.lock-text{color:#b9cce0;font-size:18px;line-height:1.6}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:620px;margin:25px auto}
+.unit{background:rgba(35,95,150,.14);border:1px solid rgba(120,190,255,.22);border-radius:15px;padding:13px 8px}
+.num{display:block;font-size:clamp(25px,5vw,42px);color:#a9d8ff;font-weight:bold}
+.label{color:#8fa6ba;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.route{position:relative;max-width:760px;height:145px;margin:30px auto 12px}
+.route-line{position:absolute;left:10%;right:10%;top:65px;border-top:2px dashed rgba(115,190,255,.38)}
+.place{position:absolute;top:82px;color:#bdd5ea;font-size:14px}
+.colombia{left:3%}.costarica{right:1%}
+.pin{font-size:28px;display:block}
+.plane{
+  position:absolute;top:43px;left:10%;
+  font-size:31px;filter:drop-shadow(0 0 8px rgba(110,190,255,.8));
+  animation:fly 4s ease-in-out infinite;
+  z-index:2;
+}
+@keyframes fly{
+  0%{left:10%;transform:translateY(0) rotate(-5deg)}
+  50%{left:48%;transform:translateY(-18px) rotate(2deg)}
+  100%{left:86%;transform:translateY(0) rotate(5deg)}
+}
+.route-note{font-size:13px;color:#8499aa}
+#letterScreen{display:none}
+@media(max-width:650px){
+  .countdown{grid-template-columns:repeat(2,1fr)}
+  .route{height:135px}
+}
+
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="hearts" id="hearts"></div>
+
+
+<section class="screen" id="lockedScreen">
+  <div class="card countdown-wrap">
+    <div style="font-size:58px">🔒</div>
+    <h1 class="lock-title">Tu carta todavía está cerrada 💙</h1>
+    <p class="lock-text">Samuel, hay algo especial esperándote.<br>La carta se abrirá el <b>18 de octubre de 2026 a las 6:00 a. m.</b> (hora de Colombia).</p>
+
+    <div class="countdown">
+      <div class="unit"><span class="num" id="days">--</span><span class="label">Días</span></div>
+      <div class="unit"><span class="num" id="hours">--</span><span class="label">Horas</span></div>
+      <div class="unit"><span class="num" id="minutes">--</span><span class="label">Minutos</span></div>
+      <div class="unit"><span class="num" id="seconds">--</span><span class="label">Segundos</span></div>
+    </div>
+
+    <div class="route" aria-label="Ruta aérea de Colombia a Costa Rica">
+      <div class="route-line"></div>
+      <div class="plane">✈️</div>
+      <div class="place colombia"><span class="pin">🇨🇴</span>Colombia</div>
+      <div class="place costarica"><span class="pin">🇨🇷</span>Costa Rica</div>
+    </div>
+    <div class="route-note">✈️ El avión va rumbo a Costa Rica mientras esperas...</div>
+  </div>
+</section>
+
+<section class="screen" id="letterScreen">
+<div class="card">
+<div class="letter">
+<h1>💙 Para Samuel</h1>
+
+<p>Hola, papi, jeje. 💙</p>
+
+<p>Espero que vaya siendo un hermoso día para ti y que cumplas muchos, muchos años más. Pero bueno, lo que quería decirte es que, a pesar de que a veces nos peleemos, yo te amo.</p>
+
+<p>Sé que algunas veces he fallado en darte la atención que mereces, pero quiero que sepas que te quiero muchísimo. A pesar de que estamos muy lejos el uno del otro, eso no ha impedido que sigamos amándonos.</p>
+
+<p>Conocerte en ToS fue una señal. A pesar de todas las cosas que nos han pasado, hemos seguido juntos, y eso me hace muy feliz. 😚</p>
+
+<p>Eres alguien increíble y no quiero que te menosprecies solo por un error o por lo que los demás puedan decir. Sé que te esfuerzas mucho en todo lo que te propones y que tienes un futuro brillante. Yo voy a estar aquí contigo. No estás solo, mi amor.</p>
+
+<p>Si alguna vez necesitas a alguien con quien contar o hablar sobre algo que te haya pasado, yo voy a estar ahí para escucharte y apoyarte. Nunca olvides eso.</p>
+
+<p>Eres alguien que me ha cambiado, aunque no lo creas. Eres responsable, atento, aplicado y muy cariñoso. Me has hecho muy feliz.</p>
+
+<p>Me alegra muchísimo haberte conocido y haber compartido contigo estos 7 meses. Te amo y te aprecio demasiado. 💙 X 🖤</p>
+
+<div class="gallery">
+
+<div class="final">
+  <div style="font-size:40px">💙</div>
+  <p><b>Gracias por estos 7 meses.</b></p>
+  <p>espero que pasames muchos mas juntos.</p>
+</div>
+
+<div class="signature"><b>Atte: Noah</b> 💌</div>
+</div>
+</div>
+</section>
+
+<script>
+/* 18 de octubre de 2026 a las 06:00 en Colombia (UTC-5) = 11:00 UTC */
+const target = new Date("2026-10-18T11:00:00Z");
+
+const lockedScreen = document.getElementById("lockedScreen");
+const letterScreen = document.getElementById("letterScreen");
+
+function updateCountdown(){
+  const diff = target - new Date();
+
+  if(diff <= 0){
+    lockedScreen.style.display = "none";
+    letterScreen.style.display = "flex";
+    return;
+  }
+
+  const total = Math.floor(diff / 1000);
+  const days = Math.floor(total / 86400);
+  const hours = Math.floor((total % 86400) / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = String(hours).padStart(2,"0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+/* Estrellas */
+const stars=document.getElementById("stars");
+for(let i=0;i<90;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=Math.random()*3+"s";
+  stars.appendChild(s);
+}
+
+/* Corazones */
+const hearts=document.getElementById("hearts");
+for(let i=0;i<18;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent="♥";
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDelay=Math.random()*9+"s";
+  h.style.animationDuration=(7+Math.random()*6)+"s";
+  hearts.appendChild(h);
+}
+</script>
+</body>
+</html>
